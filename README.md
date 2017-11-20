@@ -1,4 +1,10 @@
-# Blockchain for Developers: Final Project
+# Project Proposal 
+
+## Motive
+
+## Functionality
+
+## Diagram
 
 ## Overview
 
@@ -76,3 +82,4 @@ Not sure what you want to make? Here are a few ideas:
  - Decentralized crowdsourcing of lectures for class - basically have people vote on the quality of lectures and if it's good, it gets a payout in ETH. Dominant assurance applied to democratization/piracy of lectures. If it's decentralized then no one can catch you! **High key, if you are in classes that don't have webcasts and never have had webcasts, this is a way to get them!**
  - Multisig Wallet - This is more for education purposes but if you can create a simple multisig wallet that also has a web user interface, you can learn a lot about the pain Parity has been going through to get things right with their wallet!
  - RPG Game - Use IPFS to manage your save file, use Ethereum to make those state changes using serverless architecture.
+
