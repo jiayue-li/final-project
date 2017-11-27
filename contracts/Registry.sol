@@ -70,9 +70,17 @@ contract Registry {
             }));
   }
 
-  function decryptPassport(uint address, string privKey){
+  bytes20 val;
+  
+  function decryptPassport(uint passportId, string firstName, string dateOfBirth, string country, 
+  string dateOfIssue, string lastName){
     //returns decrypted information
+    val = keccak256(passportId, firstName, dateOfBirth, country, dateOfIssue, lastName);
   }
+  
+  function getOut()constant returns (bytes20 ){
+    return val;
+}
 
   // function () public payable {revert();}
   //
