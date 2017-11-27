@@ -1,16 +1,17 @@
 # Project Proposal 
 ## Overview
-- When an event occurs, a file with the information is created, and is uploaded using IPFS. Since this is a peer-to-peer exchange, a node that wants to retrieve a file will route to another node that has this file now has access to it. Since these files are on the blockchain, they cannot be modified, and all instances of our dApp will have the same list of alerts.
+17.6 Million US Citizens were subject to identity theft in 2014. Birth certificate issuance is prone to inconsistencies and have lead to trillions of dollars being misused. Given state of digitalisation and our dependencies on fraud-prone technologies, it's more important than ever before to implement this. 
 
 ## Motive
 - Blockchain offers an infrastructure of transparency, event tracking, cryptography and the chance to improve security sensor and data sharing -- which some security solutions and implementations on enterprise networks lack.
 
-- We continuously hear incidents of criminal records being manipulated, and this would prevent any of that by eliminating a central server where the records would be stored and maintaining permanent version history for every record.
-
-- Directly applicable to students at UC Berkeley - given that there are a lot of security concerns present. 
+- Directly applicable to everybody - even our ex-President was accused of faking his own certificate!  
 
 ## Functionality
-- DApp will be a browser-based application in which users will receive police alerts. All alerts will be displayed on the website, and users will be notified of any updates when the application is open. 
+- Two contracts are being implemented. registry.sol and exchange.sol. 
+- registry.sol would hold the records. 
+- exchange.sol would serve as the intermediary between the patient and the hospital
+- Ethereum would be used to put the identity on the blockchain platform.
 
 ## Diagram
 ![alt text](https://github.com/jiayue-li/final-project/blob/master/diagram.jpg "IPFS Diagram")
