@@ -27,10 +27,10 @@ contract Registry {
     owner = msg.sender;
   }
 
-  function addEmbassy(string embassyName, address embassyAddress){
-    onlyOwner()
-    embassies[embassyAddress] = embassyName;
-  }
+  // function addEmbassy(string embassyName, address embassyAddress){
+  //   onlyOwner()
+  //   embassies[embassyAddress] = embassyName;
+  // }
 
   function addPassport(uint passId, string first, string last, string dob, string count, string dateIssued, address citizen) returns (bool){
     //encrypts information in passport, then adds passport if it doesn't already exist

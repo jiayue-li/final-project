@@ -1,9 +1,7 @@
 pragma solidity ^0.4.15;
 
-// import "./AuctionInterface.sol";
 import './Registry.sol';
 
-/** @title GoodAuction */
 contract Exchange {
 
 		mapping(string => address) embassyNames; // name -> address
@@ -76,6 +74,9 @@ contract Exchange {
 		return true;
 	}
 
+	function addFunds() payable external{
+		citizenFunds[msg.sender] = msg.value;
+	}
 
 	function getBalanceCitizen() constant external returns(uint) {
 		//allows an individual to check funds in their embassy account to see if they can obtain a passport
