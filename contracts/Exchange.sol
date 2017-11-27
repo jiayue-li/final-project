@@ -62,7 +62,7 @@ contract Exchange {
 
 	function checkPassport(uint passId, string first, string last, string dob, string count, string dateIssued) returns(bool){
 		//checks to see if a passport is valid
-		return registry.checkPassport(passId, first, last, dob, count, dateIssued);
+		return registry.verifyPassport(passId, first, last, dob, count, dateIssued);
 	}
 
 
