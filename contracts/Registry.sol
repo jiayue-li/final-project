@@ -18,20 +18,17 @@ contract Registry {
   // mapping (passportId => string) country;
   // mapping (passportId => string) dateOfIssue;
 
-  struct Passport {
-    uint passportId;
-    string firstName;
-    string lastName;
-    string dateOfBirth;
-    string country;
-    string dateOfIssue;
-    string encryption;
-  }
-
   mapping (uint => Passport) passports; //maps passport id to passport
-  mapping (address => string) embassyNames; //
-  address[] embassies;
 
+  struct Passport {
+    // uint passportId;
+    // string firstName;
+    // string lastName;
+    // string dateOfBirth;
+    // string country;
+    // string dateOfIssue;
+    bytes20 encryptedInfo;
+  }
   modifier onlyOwner() {require(msg.sender == owner); _;}
   modifier onlyEmbassy() {require (checkEmbassy()); _;}
   // modifier windowOpen() {require(now < endTime); _;}
@@ -49,7 +46,7 @@ contract Registry {
     return false;
   }
 
-  function Registry(string registryName) {
+  function Registry() {
     owner = msg.sender;
   }
 
@@ -58,26 +55,27 @@ contract Registry {
     embassies[embassyAddress] = embassyName;
   }
 
-  function createPassport(uint passId, string first, string lastName, string dob, string count, string dateIssued){
-    onlyEmbassy()
-    passports.push(Passport({
-                passportId: passId,
-                firstName: first,
-                lastName: last,
-                dateOfBirth: dob,
-                country: count;
-                dateOfIssue: dateIssued
-            }));
-  }
+  // function createPassport(uint passId, string first, string lastName, string dob, string count, string dateIssued){
+  //   onlyEmbassy()
+  //   passports.push(Passport({
+  //               passportId: passId,
+  //               firstName: first,
+  //               lastName: last,
+  //               dateOfBirth: dob,
+  //               country: count;
+  //               dateOfIssue: dateIssued
+  //           }));
+  // }
+  function addPassport(Pass)
 
   bytes20 val;
-  
-  function decryptPassport(uint passportId, string firstName, string dateOfBirth, string country, 
+
+  function decryptPassport(uint passportId, string firstName, string dateOfBirth, string country,
   string dateOfIssue, string lastName){
     //returns decrypted information
     val = keccak256(passportId, firstName, dateOfBirth, country, dateOfIssue, lastName);
   }
-  
+
   function getOut()constant returns (bytes20 ){
     return val;
 }

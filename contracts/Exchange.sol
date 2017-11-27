@@ -1,62 +1,105 @@
 pragma solidity ^0.4.15;
 
 // import "./AuctionInterface.sol";
+import './Registry.sol';
 
 /** @title GoodAuction */
 contract Exchange {
-	/* New data structure, keeps track of refunds owed to ex-highest bidders */
-	mapping(address => uint) embassyFunds;
-	mapping(
 
-	/* Bid function, shifts to push paradigm
-	 * Must return true on successful send and/or bid, bidder
-	 * reassignment
-	 * Must return false on failure and allow people to
-	 * retrieve their funds
-	 */
+		mapping(string => address) embassyNames; // name -> address
+		mapping(address => uint) embassyFunds; //address -> funds
+		address[] embassies; //list of registered embassies
+		uint passportFee; //the fee required to create a passport
+		address owner;
 
-	 function Exchange(){
+		mapping(address => uint) citizenFunds;
+		mapping(address => uint) embassyFunds;
+
+		struct Passport {
+			// uint passportId;
+			// string firstName;
+			// string lastName;
+			// string dateOfBirth;
+			// string country;
+			// string dateOfIssue;
+			bytes20 encryptedInfo;
+		}
+		modifier onlyOwner() {require(msg.sender == owner); _;}
+		modifier onlyEmbassy() {require (checkEmbassy(msg.sender)); _;}
+
+		function checkEmbassy(address sender) returns (bool){
+	    for (uint i = 0; i < embassies.length; i++){
+	      if sender == embassies[i]{
+	        return true;
+	      }
+	    }
+	    return false;
+	  }
+
+	 function Exchange(uint fee){
 		 owner = msg.sender;
+		 passportFee = fee;
+		 Registry registry = new Registry();
 	 }
 
+	 function addEmbassy(string embassyName, address embassyAddress){
+	 	onlyOwner()
+	 	embassies[embassyAddress] = embassyName;
+	 }
 
-	//  function () payable external returns(bool) {
-	// 	// YOUR CODE HERE
-	// 	if (msg.value <= getHighestBid()){
-	// 		refunds[msg.sender] = msg.value;
-	// 		return false;
-	// 	}else {
-	// 		if (highestBidder != 0){
-	// 			refunds[highestBidder] += highestBid;
-	// 		}
-  //
-	// 		// refunds[highestBidder] = getHighestBid();
-	// 		highestBidder = msg.sender;
-	// 		highestBid = msg.value;
-	// 		return false;
-	// 	}
-	// }
-  //
-	// /* New withdraw function, shifts to push paradigm */
-	// function withdrawRefund() external returns(bool) {
-	// 	// YOUR CODE HERE
-	// 	uint refund = refunds[msg.sender];
-	// 	refunds[msg.sender] = 0;
-	// 	if (!msg.sender.send(refund)){
-	// 		refunds[msg.sender] = refund;
-	// 		return false;
-	// 	}
-	// 	return true;
-	// }
-  //
-	// /* Allow users to check the amount they can withdraw */
-	// function getMyBalance() constant external returns(uint) {
-	// 	return refunds[msg.sender];
-	// }
-  //
-	// /* Give people their funds back */
-	// function () payable {
-	// 	// YOUR CODE HERE
-	// 	revert();
-	// }
+	 function createPassport(uint passId, string first, string last, string dob, string count, string dateIssued, address citizen) {
+		// An embassy creates a passport by withdrawing funds from the individual requesting the passport
+		onlyEmbassy()
+		if (citizenFunds[citizen] >= fee){
+				citizenFunds[citizen] = citizenFunds[citizen] - fee;
+			if (registry.addPassport(passId, first, last, dob, count, dateIssued, citizen)){
+				embassyFunds[msg.sender] += fee;
+			}else{
+				citizenFunds[citizen] = citizenFunds[citizen] + fee;
+			}
+		}
+	}
+
+	function checkPassport(uint passId, string first, string last, string dob, string count, string dateIssued) returns(bool){
+		//checks to see if a passport is valid
+		return registry.checkPassport(passId, first, last, dob, count, dateIssued);
+	}
+
+
+	function withdrawFundsCitizen(uint refund) external returns(bool) {
+		//allows an individual to withdraw funds from their embassy account
+		individualFunds[msg.sender] -= refund;
+		if (!msg.sender.send(refund)){
+			individualFunds[msg.sender] += refund;
+			return false;
+		}
+		return true;
+	}
+
+
+	function getBalanceCitizen() constant external returns(uint) {
+		//allows an individual to check funds in their embassy account to see if they can obtain a passport
+		return individualFunds[msg.sender];
+	}
+
+	function withdrawFundsEmbassy(uint refund) external returns(bool) {
+		//allows an individual to withdraw funds from their embassy account
+		embassyFunds[msg.sender] -= refund;
+		if (!msg.sender.send(refund)){
+			embassyFunds[msg.sender] += refund;
+			return false;
+		}
+		return true;
+	}
+
+
+	function getBalanceEmbassy() constant external returns(uint) {
+		//allows an individual to check funds in their embassy account to see if they can obtain a passport
+		return embassyFunds[msg.sender];
+	}
+
+
+	function () payable {
+		revert();
+	}
 }
