@@ -15,10 +15,12 @@ contract Registry {
   // mapping (passportId => string) dateOfIssue;
 
   mapping (address => Passport) passports; //maps address of citizen to passport
-  bytes20[] passportInfo; //list of encrypted passport info
+  bytes32[] passportInfo; //list of encrypted passport info
 
+  address owner;
+  
   struct Passport {
-    bytes20 encryptedInfo;
+    bytes32 encryptedInfo;
   }
 
   modifier onlyOwner() {require(msg.sender == owner); _;}
@@ -32,20 +34,20 @@ contract Registry {
   //   embassies[embassyAddress] = embassyName;
   // }
 
-  function addPassport(uint passId, string first, string last, string dob, string count, string dateIssued, address citizen) returns (bool){
+  function addPassport(uint passId, string first, string last, string dob, string count, string dateIssued, address citizen) public returns (bool){
     //encrypts information in passport, then adds passport if it doesn't already exist
-    encrypted = keccak256(passId, first, last, dob, count, dateIssued);
+   bytes32 encrypted = keccak256(passId, first, last, dob, count, dateIssued);
     if (!passportExists(passId, first, last, dob, count, dateIssued)){
-      passports[citizen] = Passport({encryptedInfo: encrypted});
+      passports[citizen] = Passport(encrypted);
       passportInfo.push(encrypted);
     }
   }
 
   function verifyPassport(uint passId, string first, string last, string dob, string count, string dateIssued) returns (bool){
     //checks to see if passport is a valid by hashing it and checking it's existence in system
-    encrypted = keccak256(passId, first, last, dob, count, dateIssued);
+    bytes32 encrypted = keccak256(passId, first, last, dob, count, dateIssued);
     for (uint i = 0; i< passportInfo.length; i++){
-      if (encryptedInfo == passportInfo[i]){
+      if (encrypted == passportInfo[i]){
         return true;
       }
     }
