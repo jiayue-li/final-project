@@ -58,6 +58,7 @@ contract Registry {
     return verifyPassport(passId, first, last, dob, count, dateIssued);
   }
 
+
 //   function decryptPassport(uint passportId, string firstName, string dateOfBirth, string country,
 //   string dateOfIssue, string lastName){
 //     //returns decrypted information
@@ -67,6 +68,9 @@ contract Registry {
 //   function getOut()constant returns (bytes20 ){
 //     return val;
 // }
-
+  
+  function getOwner() returns(address) {
+    return owner;
+  }
 
 }

@@ -1,112 +1,37 @@
-var AmazonDapp = artifacts.require("./Exchange.sol");
+var Exchange = artifacts.require("./Exchange.sol");
 
-// contract('Exchange', function(accounts) {
-//   it("Testing Joining", function() {
-//     var exchange;
-//     var acc1 = accounts[0];
+contract('Exchange', function(accounts) {
+  let acc1 = accounts[0];
+  let acc2 = accounts[1];
 
-//     return AmazonDapp.deployed().then(function(instance) {
-//       amazon = instance;
-//       amazon.join("David");
-//       return amazon.getOwnerName.call(acc1);
-     
-//     }).then(function(name) {
-      
-//       // assert.equal(result.toString(), , "Balance should be zero")
-//       assert.equal(name, "David", "Name should be 'David'");
-//       return amazon.getOwnerBalance.call(acc1);
-      
-//     }).then(function(balance) {
-//       assert.equal(balance.toNumber(), 0, "Balance should be zero");
-//       return amazon.getOwnerItems.call(acc1);
-//     }).then(function(items) {
-//       assert.equal(items.length, 0, "Items should be empty")
-//     })
-//   });
-// });
+  it("Testing Adding Embassy", function() {
+  	var ex;
+    return Exchange.deployed().then(function(instance) {
+    	ex = instance;
+      	ex.addEmbassy("Embassy 1", acc1);
+      	return ex.checkEmbassy.call(acc1);
+    }).then(function(emb) {
+    	assert.equal(emb, true, "Account 1 should be embassy");
+    })
+  });
 
+  it("Create Passport", function() {
+  	var ex;
+    return Exchange.deployed().then(function(instance) {
+    	ex = instance;
+      	ex.addEmbassy("Embassy 1", acc1);
+      	ex.addFunds({from:acc2, value:1});
+      	return ex.getBalanceCitizen.call({from:acc2});
+    }).then(function(val) {
+    	assert.equal(val.toString(10), "1", "Account 2 should have value 1");
+    	ex.createPassport(2, "Josh", "Hug", "February 30, 2000", "9", "February 31, 2000", acc2);
+    	return ex.checkPassport.call(2, "Josh", "Hug", "February 30, 2000", "9", "February 31, 2000");
 
-// contract('AmazonDapp', function(accounts) {
-//   it("Testing Joining", function() {
-//     var amazon;
-//     var acc1 = accounts[0];
+    }).then(function(hasPass) {
+    	assert.equal(hasPass, true, "Valid Passport");
 
-//     return AmazonDapp.deployed().then(function(instance) {
-//       amazon = instance;
-//       amazon.join("David");
-//       return amazon.getOwnerName.call(acc1);
-     
-//     }).then(function(name) {
-      
-//       // assert.equal(result.toString(), , "Balance should be zero")
-//       assert.equal(name, "David", "Name should be 'David'");
-//       return amazon.getOwnerBalance.call(acc1);
-      
-//     }).then(function(balance) {
-//       assert.equal(balance.toNumber(), 0, "Balance should be zero");
-//       return amazon.getOwnerItems.call(acc1);
-//     }).then(function(items) {
-//       assert.equal(items.length, 0, "Items should be empty")
-//     })
-//   });
-
-//   it("Creating items", function() {
-//     var amazon;
-//     var acc1 = accounts[0];
-
-//     return AmazonDapp.deployed().then(function(instance) {
-//       amazon = instance;
-//       amazon.join("David");
-//       amazon.addFunds({from: acc1, value: 10});
-//       return amazon.getFunds.call();
-//     }).then(function(result) { 
-//       assert.equal(result.toNumber(), 10, "Added funds successfully");
-//       amazon.addItem(1, "item1");
-//       return amazon.getItemName.call(1);
-//     }).then(function(name) {
-//       assert.equal(name, "item1", "Correct name");
-//       return amazon.getItemPrice.call(1);
-//     }).then(function(price) {
-//       assert.equal(price.toNumber(), 99, "Correct price");
-//       return amazon.getItemOwner.call(1);
-//     }).then(function(owner) {
-//       assert.equal(owner, acc1, "Correct owner address");
-//       return amazon.getItemForSale.call(1);
-//     }).then(function(forsale) {
-//       assert.equal(forsale, false, "Correct owner address");
-
-//     })
-//   });
-
-//   it("Buy an item", function() {
-//     var amazon;
-//     var acc1 = accounts[0];
-
-//     return AmazonDapp.deployed().then(function(instance) {
-//       amazon = instance;
-//       amazon.join("David");
-//       amazon.addFunds({from: acc1, value: 10});
-//       amazon.addItem(1, "item1");
-//       return amazon.getItemPrice.call(1);
-//     }).then(function(result) { 
-//       assert.equal(result.toNumber(), 99, "Set price correctly");
-//       amazon.setItemPrice(1, 5);
-//       return amazon.getItemPrice.call(1);
-//       // return amazon.getItemName.call(1);
-//     }).then(function(price) {
-//       assert.equal(price, 5, "Changed price correctly");
-//       // return amazon.getItemPrice.call(1);
-//     }).then(function(price) {
-//       // assert.equal(price.toNumber(), 1, "Correct price");
-//       // return amazon.getItemOwner.call(1);
-//     }).then(function(owner) {
-//       // assert.equal(owner, acc1, "Correct owner address");
-//       // return amazon.getItemForSale.call(1);
-//     }).then(function(forsale) {
-//       // assert.equal(forsale, false, "Correct owner address");
-
-//     })
-//   });
+    })
+  });
 
 
-// });
+});

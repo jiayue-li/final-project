@@ -44,6 +44,7 @@ contract Exchange {
 	 	onlyOwner()
 	 {
 	 	embassyNames[embassyName] = embassyAddress;
+	 	embassies.push(embassyAddress);
 	 }
 
 	 function createPassport(uint passId, string first, string last, string dob, string count, string dateIssued, address citizen)
@@ -52,10 +53,10 @@ contract Exchange {
 		// An embassy creates a passport by withdrawing funds from the individual requesting the passport
 
 		if (citizenFunds[citizen] >= passportFee){
-				citizenFunds[citizen] = citizenFunds[citizen] - passportFee;
+			citizenFunds[citizen] = citizenFunds[citizen] - passportFee;
 			if (registry.addPassport(passId, first, last, dob, count, dateIssued, citizen)){
 				embassyFunds[msg.sender] += passportFee;
-			}else{
+			} else {
 				citizenFunds[citizen] = citizenFunds[citizen] + passportFee;
 			}
 		}
@@ -69,21 +70,21 @@ contract Exchange {
 
 	function withdrawFundsCitizen(uint refund) external returns(bool) {
 		//allows an individual to withdraw funds from their embassy account
-		embassyFunds[msg.sender] -= refund;
+		citizenFunds[msg.sender] -= refund;
 		if (!msg.sender.send(refund)){
-			embassyFunds[msg.sender] += refund;
+			citizenFunds[msg.sender] += refund;
 			return false;
 		}
 		return true;
 	}
 
-	function addFunds() payable external{
+	function addFunds() payable external {
 		citizenFunds[msg.sender] = msg.value;
 	}
 
 	function getBalanceCitizen() constant external returns(uint) {
 		//allows an individual to check funds in their embassy account to see if they can obtain a passport
-		return embassyFunds[msg.sender];
+		return citizenFunds[msg.sender];
 	}
 
 	function withdrawFundsEmbassy(uint refund) external returns(bool) {
