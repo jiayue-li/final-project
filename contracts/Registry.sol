@@ -18,7 +18,7 @@ contract Registry {
   bytes32[] passportInfo; //list of encrypted passport info
 
   address owner;
-  
+
   struct Passport {
     bytes32 encryptedInfo;
   }

@@ -9,7 +9,7 @@ contract Exchange {
 	address[] embassies; //list of registered embassies
 	uint passportFee; //the fee required to create a passport
 	address owner;
-	address registry;
+	Registry registry;
 
 	mapping(address => uint) citizenFunds;
 
@@ -43,14 +43,14 @@ contract Exchange {
 	 function addEmbassy(string embassyName, address embassyAddress)
 	 	onlyOwner()
 	 {
-	 	embassyNames[embassyName] = embassy;
+	 	embassyNames[embassyName] = embassyAddress;
 	 }
 
-	 function createPassport(uint passId, string first, string last, string dob, string count, string dateIssued, address citizen) 
+	 function createPassport(uint passId, string first, string last, string dob, string count, string dateIssued, address citizen)
 	 	onlyEmbassy()
 	 {
 		// An embassy creates a passport by withdrawing funds from the individual requesting the passport
-		
+
 		if (citizenFunds[citizen] >= passportFee){
 				citizenFunds[citizen] = citizenFunds[citizen] - passportFee;
 			if (registry.addPassport(passId, first, last, dob, count, dateIssued, citizen)){
