@@ -19,5 +19,7 @@ This would not only prevent identity theft, but also make travelling less cumber
 
 - In order to maximise security and protection of identity: we will be using SHA-256 encryption based on user passport information such as: place of birth, date of issuance, first name, last name
 
+-Note: Website can be run locally on "David" branch.
+
 ## Diagram
 ![alt text](https://github.com/jiayue-li/final-project/blob/master/diagram.jpg "Proof-of-Travel")
