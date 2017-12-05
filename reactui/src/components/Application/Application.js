@@ -18,7 +18,7 @@ import data from './data.json'
 
 import Entry from '../Entry/Entry'
 
-import {exchangeContract} from './EthereumSetup'
+//import {exchangeContract} from './EthereumSetup'
 
 
 class Application extends Component {
